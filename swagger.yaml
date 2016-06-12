@@ -1,0 +1,329 @@
+swagger: '2.0'
+info:
+  title: Server Monitor API
+  description: Monitor your server status API
+  version: 1.0.0
+host: localhost:8000
+schemes:
+  - http
+basePath: /api/v1
+produces:
+  - application/json
+paths:
+  /monitors:
+    get:
+      summary: Monitor Types
+      description: |
+        The Monitors endpoint returns information about the monitors available
+        for a given server. The response includes the display name and other
+        details about each monitor.
+      tags:
+        - Monitor
+      responses:
+        '200':
+          description: An array of monitors
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Monitor"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /monitors/{monitorId}:
+    get:
+      summary: Information about a given monitor.
+      description: Shows all the details regarding the monitor.
+      parameters:
+        - name: monitorId
+          type: string
+          in: path
+          description: ID of the monitor.
+          required: true
+      tags:
+        - Monitor
+      responses:
+        200:
+          description: Details of the given monitor.
+          schema:
+            $ref: "#/definitions/Monitor"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /monitors/{monitorId}/metrics:
+    get:
+      summary: List of monitor metrics.
+      description: Get a list of current metrics for a given monitor.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: ID of the monitor.
+          required: true
+      tags:
+        - Metric
+      responses:
+        200:
+          description: 'Lists the metrics for monitor ID.'
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: Setup a new metric.
+      description: Sets a new metric to monitor that will be appended to any existing metrics.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: ID of the monitor.
+          required: true
+        - name: metric
+          in: body
+          description: New metric to monitor.
+          required: true
+          schema:
+            $ref: "#/definitions/Metric"
+      tags:
+        - Metric
+      responses:
+        201:
+          description: Metrics successfully setup.
+          schema:
+            $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: Stop monitoring metrics.
+      description: Deletes all metrics for a given monitor.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: Delete given monitor metrics.
+          required: true
+      tags:
+        - Metric
+      responses:
+        200:
+          description: Metrics successfully deleted.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /monitors/{monitorId}/metrics/{metricId}:
+    get:
+      summary: Get metric attributes.
+      description: Gets the current values of metric attibutes.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: ID of the monitor.
+          required: true
+        - name: metricId
+          in: path
+          type: string
+          description: ID of the metric.
+          required: true
+      tags:
+        - Metric
+      responses:
+        200:
+          description: Metric attributes.
+          schema:
+            $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    put:
+      summary: Update metric attributes.
+      description: Modifies the metric attibutes with new values.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: ID of the monitor.
+          required: true
+        - name: metricId
+          in: path
+          type: string
+          description: Updated attributes for a given metric in a monitor.
+          required: true
+        - name: metric
+          in: body
+          description: Metric with updated attributes.
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Metric"
+      tags:
+        - Metric
+      responses:
+        200:
+          description: Metrics successfully updated.
+          schema:
+            $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: Delete metric in a monitor.
+      description: Deletes the metric from a monitor.
+      parameters:
+        - name: monitorId
+          in: path
+          type: string
+          description: ID of the monitor.
+          required: true
+        - name: metricId
+          in: path
+          type: string
+          description: Updated attributes for a given metric in a monitor.
+          required: true
+      tags:
+        - Metric
+      responses:
+        200:
+          description: Metric successfully deleted.
+          schema:
+            $ref: "#/definitions/Metric"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+  /datasets:
+    get:
+      summary: Monitor activity
+      description: "The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary."
+      parameters:
+        - name: monitor
+          in: query
+          type: string
+          description: Filter by monitor.
+        - name: metric
+          in: query
+          type: string
+          description: Filter by metric.
+        - name: begin
+          in: query
+          type: integer
+          format: int64
+          description: Where does the query start from.
+        - name: end
+          in: query
+          type: integer
+          format: int64
+          description: Where does the query end.
+        - name: limit
+          in: query
+          type: integer
+          format: int64
+          description: 'Number of items to retrieve. Default is 5, maximum is 100.'
+      tags:
+        - DataSet
+      responses:
+        '200':
+          description: History information for the given user
+          schema:
+            $ref: "#/definitions/DataSet"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Metric:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Name of the metric.
+      interval:
+        type: integer
+        format: int64
+        description: Number of seconds between metric updates.
+      retention:
+        type: integer
+        format: int64
+        description: Number of seconds of TTL.
+  Monitor:
+    type: object
+    properties:
+      name:
+        type: string
+        description: Name of the monitor for a given server. For example, CPU or memory.
+      description:
+        type: string
+        description: Description of monitor.
+      metrics:
+        type: array
+        items:
+          $ref: "#/definitions/Metric"
+  DataPoint:
+    type: object
+    properties:
+      monitor:
+        type: string
+        description: Monitor name for this data point.
+      metric:
+        type: string
+        description: Metric name for this data point.
+      timestamp:
+        type: integer
+        format: int64
+        description: Time when the metric was recorded.
+      value:
+        type: number
+        description: Metric numeric value at a given time.
+  Filter:
+    type: object
+    properties:
+      monitor:
+        type: string
+        description: Name of the monitor
+      metric:
+        type: string
+        description: Name of the metric for a given monitor.
+      begin:
+        type: integer
+        format: int64
+        description: Where does the query start from.
+      end:
+        type: integer
+        format: int64
+        description: Where does the query end.
+      limit:
+        type: integer
+        format: int64
+        description: Maximum numer of elements per dataset.
+  DataSet:
+    type: object
+    properties:
+      filter:
+        $ref: "#/definitions/Filter"
+      values:
+        type: array
+        items:
+          $ref: "#/definitions/DataPoint"
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
