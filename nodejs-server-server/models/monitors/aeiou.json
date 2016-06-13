@@ -1,0 +1,11 @@
+{
+  "name": "aeiou",
+  "description": "aeiou",
+  "metrics": [
+    {
+      "name": "aeiou",
+      "interval": 123456789,
+      "retention": 123456789
+    }
+  ]
+}
