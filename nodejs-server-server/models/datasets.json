@@ -1,0 +1,17 @@
+{
+  "filter": {
+    "monitor": "aeiou",
+    "metric": "aeiou",
+    "begin": 123456789,
+    "end": 123456789,
+    "limit": 123456789
+  },
+  "values": [
+    {
+      "monitor": "aeiou",
+      "metric": "aeiou",
+      "timestamp": 123456789,
+      "value": 1.3579
+    }
+  ]
+}
