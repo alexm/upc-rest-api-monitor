@@ -43,16 +43,16 @@ paths:
             $ref: "#/definitions/Error"
   "/monitors/{monitorId}":
     x-swagger-router-controller: monitors
+    parameters:
+      - name: monitorId
+        type: string
+        in: path
+        description: ID of the monitor.
+        required: true
     get:
       operationId: getMonitor
       summary: Information about a given monitor.
       description: Shows all the details regarding the monitor.
-      parameters:
-        - name: monitorId
-          type: string
-          in: path
-          description: ID of the monitor.
-          required: true
       tags:
         - Monitor
       responses:
@@ -66,15 +66,15 @@ paths:
             $ref: "#/definitions/Error"
   "/monitors/{monitorId}/metrics":
     x-swagger-router-controller: metrics
+    parameters:
+      - name: monitorId
+        in: path
+        type: string
+        description: ID of the monitor.
+        required: true
     get:
       summary: List of monitor metrics.
       description: Get a list of current metrics for a given monitor.
-      parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: ID of the monitor.
-          required: true
       tags:
         - Metric
       responses:
@@ -92,11 +92,6 @@ paths:
       summary: Setup a new metric.
       description: Sets a new metric to monitor that will be appended to any existing metrics.
       parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: ID of the monitor.
-          required: true
         - name: metric
           in: body
           description: New metric to monitor.
@@ -117,12 +112,6 @@ paths:
     delete:
       summary: Stop monitoring metrics.
       description: Deletes all metrics for a given monitor.
-      parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: Delete given monitor metrics.
-          required: true
       tags:
         - Metric
       responses:
@@ -138,20 +127,20 @@ paths:
             $ref: "#/definitions/Error"
   "/monitors/{monitorId}/metrics/{metricId}":
     x-swagger-router-controller: metric
+    parameters:
+      - name: monitorId
+        in: path
+        type: string
+        description: ID of the monitor.
+        required: true
+      - name: metricId
+        in: path
+        type: string
+        description: ID of the metric.
+        required: true
     get:
       summary: Get metric attributes.
       description: Gets the current values of metric attibutes.
-      parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: ID of the monitor.
-          required: true
-        - name: metricId
-          in: path
-          type: string
-          description: ID of the metric.
-          required: true
       tags:
         - Metric
       responses:
@@ -167,16 +156,6 @@ paths:
       summary: Update metric attributes.
       description: Modifies the metric attibutes with new values.
       parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: ID of the monitor.
-          required: true
-        - name: metricId
-          in: path
-          type: string
-          description: Updated attributes for a given metric in a monitor.
-          required: true
         - name: metric
           in: body
           description: Metric with updated attributes.
@@ -199,17 +178,6 @@ paths:
     delete:
       summary: Delete metric in a monitor.
       description: Deletes the metric from a monitor.
-      parameters:
-        - name: monitorId
-          in: path
-          type: string
-          description: ID of the monitor.
-          required: true
-        - name: metricId
-          in: path
-          type: string
-          description: Updated attributes for a given metric in a monitor.
-          required: true
       tags:
         - Metric
       responses:
@@ -223,33 +191,33 @@ paths:
             $ref: "#/definitions/Error"
   /datasets:
     x-swagger-router-controller: datasets
+    parameters:
+      - name: monitor
+        in: query
+        type: string
+        description: Filter by monitor.
+      - name: metric
+        in: query
+        type: string
+        description: Filter by metric.
+      - name: begin
+        in: query
+        type: integer
+        format: int64
+        description: Where does the query start from.
+      - name: end
+        in: query
+        type: integer
+        format: int64
+        description: Where does the query end.
+      - name: limit
+        in: query
+        type: integer
+        format: int64
+        description: 'Number of items to retrieve. Default is 5, maximum is 100.'
     get:
       summary: Monitor activity
       description: "The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary."
-      parameters:
-        - name: monitor
-          in: query
-          type: string
-          description: Filter by monitor.
-        - name: metric
-          in: query
-          type: string
-          description: Filter by metric.
-        - name: begin
-          in: query
-          type: integer
-          format: int64
-          description: Where does the query start from.
-        - name: end
-          in: query
-          type: integer
-          format: int64
-          description: Where does the query end.
-        - name: limit
-          in: query
-          type: integer
-          format: int64
-          description: 'Number of items to retrieve. Default is 5, maximum is 100.'
       tags:
         - DataSet
       responses:
