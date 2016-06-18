@@ -2,6 +2,7 @@ var should = require('should');
 var request = require('supertest');
 var server = require('../../../app');
 var monitors = require('../../../api/helpers/monitors.js');
+var errors = require('../../../api/helpers/errors.js');
 
 describe('controllers', function() {
 
@@ -43,6 +44,27 @@ describe('controllers', function() {
 
             done();
           });
+      });
+
+    });
+
+    describe('GET /monitors/notfound', function() {
+
+      it('should return not found error', function(done) {
+
+        request(server)
+          .get('/monitors/notfound')
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(404)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.eql(errors.not_found);
+
+            done();
+          });
+
       });
 
     });
