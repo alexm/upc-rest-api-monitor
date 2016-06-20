@@ -60,6 +60,10 @@ paths:
           description: Details of the given monitor.
           schema:
             $ref: "#/definitions/Monitor"
+        404:
+          description: Monitor not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -84,6 +88,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Metric"
+        404:
+          description: Monitor not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -105,6 +113,10 @@ paths:
           description: Metrics successfully setup.
           schema:
             $ref: "#/definitions/Metric"
+        404:
+          description: Monitor not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -121,6 +133,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Metric"
+        404:
+          description: Monitor not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -148,6 +164,10 @@ paths:
           description: Metric attributes.
           schema:
             $ref: "#/definitions/Metric"
+        404:
+          description: Monitor and or metric not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -171,6 +191,10 @@ paths:
           description: Metrics successfully updated.
           schema:
             $ref: "#/definitions/Metric"
+        404:
+          description: Monitor and or metric not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -185,6 +209,10 @@ paths:
           description: Metric successfully deleted.
           schema:
             $ref: "#/definitions/Metric"
+        404:
+          description: Monitor and or metric not found.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
