@@ -77,6 +77,7 @@ paths:
         description: ID of the monitor.
         required: true
     get:
+      operationId: getMetricList
       summary: List of monitor metrics.
       description: Get a list of current metrics for a given monitor.
       tags:
@@ -97,6 +98,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
     post:
+      operationId: enableMetric
       summary: Setup a new metric.
       description: Sets a new metric to monitor that will be appended to any existing metrics.
       parameters:
@@ -117,11 +119,16 @@ paths:
           description: Monitor not found.
           schema:
             $ref: "#/definitions/Error"
+        409:
+          description: Metric already enabled.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
             $ref: "#/definitions/Error"
     delete:
+      operationId: disableMonitor
       summary: Stop monitoring metrics.
       description: Deletes all metrics for a given monitor.
       tags:
@@ -142,7 +149,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
   "/monitors/{monitorId}/metrics/{metricId}":
-    x-swagger-router-controller: metric
+    x-swagger-router-controller: metrics
     parameters:
       - name: monitorId
         in: path
@@ -155,6 +162,7 @@ paths:
         description: ID of the metric.
         required: true
     get:
+      operationId: getMetric
       summary: Get metric attributes.
       description: Gets the current values of metric attibutes.
       tags:
@@ -173,6 +181,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
     put:
+      operationId: updateMetric
       summary: Update metric attributes.
       description: Modifies the metric attibutes with new values.
       parameters:
@@ -181,9 +190,7 @@ paths:
           description: Metric with updated attributes.
           required: true
           schema:
-            type: array
-            items:
-              $ref: "#/definitions/Metric"
+            $ref: "#/definitions/Metric"
       tags:
         - Metric
       responses:
@@ -195,11 +202,16 @@ paths:
           description: Monitor and or metric not found.
           schema:
             $ref: "#/definitions/Error"
+        409:
+          description: Metric ID mismatch.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
             $ref: "#/definitions/Error"
     delete:
+      operationId: disableMetric
       summary: Delete metric in a monitor.
       description: Deletes the metric from a monitor.
       tags:
