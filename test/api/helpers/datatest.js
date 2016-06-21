@@ -1,5 +1,4 @@
 'use strict';
-var util = require('util');
 var should = require('should');
 var request = require('supertest');
 var server = require('../../../app');
@@ -9,49 +8,44 @@ module.exports = {
 };
 
 /*
- * data = {
- *   "/foo/%s/bar/%s": [
- *     [ verb, param1, param2, body, status, expected ],
- *     ...
- *   ]
+ * tests = [
+ *   [ verb, uri, body, status, result ],
  *   ...
- * }
+ * ]
  */
-function testData(data) {
-  for (var test in data) {
-    data[test].forEach(function (params) {
-      var verb = params.shift();
-      var expected = params.pop();
-      var status = params.pop();
-      var body = params.pop();
-      params.unshift(test);
-      var uri = util.format.apply(null, params);
-      var description = verb.toUpperCase() + " " + uri;
+function testData(tests) {
+  tests.forEach(function (test) {
+    var verb = test[0];
+    var uri = test[1];
+    var body = test[2];
+    var status = test[3];
+    var expected = test[4];
 
-      describe(description, function() {
-        var shouldReturn = 'Should return ' + status.message + ' error';
-        it(shouldReturn, function(done) {
+    var description = verb.toUpperCase() + " " + uri;
 
-          var op = request(server);
-          op = op[verb](uri);
-          if (undefined !== body) {
-            op = op.send(body);
-          }
+    describe(description, function() {
+      var shouldReturn = 'Should return ' + status.message + ' error';
+      it(shouldReturn, function(done) {
 
-          op
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .expect(status.code)
-            .end(function(err, res) {
-              should.not.exist(err);
+        var op = request(server);
+        op = op[verb](uri);
+        if (undefined !== body) {
+          op = op.send(body);
+        }
 
-              res.body.should.eql(expected);
+        op
+          .set('Accept', 'application/json')
+          .expect('Content-Type', /json/)
+          .expect(status.code)
+          .end(function(err, res) {
+            should.not.exist(err);
 
-              done();
-            });
+            res.body.should.eql(expected);
 
-        });
+            done();
+          });
+
       });
     });
-  }
+  });
 }

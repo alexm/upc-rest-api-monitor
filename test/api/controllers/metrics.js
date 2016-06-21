@@ -30,34 +30,30 @@ describe('controllers', function() {
       retention: 2*86400,
     };
 
-    var dataTests = {
-      '/monitors/%s/metrics': [
-        [ 'get',    'notfound',             undefined,     errors.not_found, errors.not_found ],
-        [ 'post',   'notfound',             badMetric,     errors.not_found, errors.not_found ],
-        [ 'delete', 'notfound',             undefined,     errors.not_found, errors.not_found ],
-        [ 'post',   'memory',               freememMetric, errors.OK,        freememMetric    ],
-        [ 'post',   'memory',               freememMetric, errors.conflict,  errors.conflict  ],
-        [ 'get',    'memory',               undefined,     errors.OK,        [freememMetric]  ],
-        [ 'post',   'memory',               totalmemMetric, errors.OK,       totalmemMetric   ],
-        [ 'post',   'memory',               totalmemMetric, errors.conflict, errors.conflict  ],
-        [ 'get',    'memory',               undefined,     errors.OK,        [freememMetric,totalmemMetric] ],
-      ],
-      '/monitors/%s/metrics/%s': [
-        [ 'get',    'notfound', 'freemem',  undefined,     errors.not_found, errors.not_found ],
-        [ 'put',    'notfound', 'freemem',  badMetric,     errors.not_found, errors.not_found ],
-        [ 'delete', 'notfound', 'freemem',  undefined,     errors.not_found, errors.not_found ],
-        [ 'get',    'memory',   'notfound', undefined,     errors.not_found, errors.not_found ],
-        [ 'put',    'memory',   'notfound', badMetric,     errors.not_found, errors.not_found ],
-        [ 'delete', 'memory',   'notfound', undefined,     errors.not_found, errors.not_found ],
-        [ 'put',    'memory',   'freemem',  badMetric,     errors.conflict,  errors.conflict  ],
-        [ 'get',    'memory',   'freemem',  undefined,     errors.OK,        freememMetric    ],
-        [ 'put',    'memory',   'freemem',  freememNewMetric, errors.OK,     freememNewMetric ],
-        [ 'get',    'memory',   'freemem',  undefined,     errors.OK,        freememNewMetric ],
-        [ 'delete', 'memory',   'freemem',  undefined,     errors.OK,        freememNewMetric ],
-        [ 'get',    'memory',   'freemem',  undefined,     errors.not_found, errors.not_found ],
-        [ 'get',    'memory',   'totalmem', undefined,     errors.OK,        totalmemMetric   ],
-      ],
-    };
+    var dataTests = [
+      [ 'get',    '/monitors/notfound/metrics',          undefined,        errors.not_found, errors.not_found ],
+      [ 'post',   '/monitors/notfound/metrics',          badMetric,        errors.not_found, errors.not_found ],
+      [ 'delete', '/monitors/notfound/metrics',          undefined,        errors.not_found, errors.not_found ],
+      [ 'post',   '/monitors/memory/metrics',            freememMetric,    errors.OK,        freememMetric    ],
+      [ 'post',   '/monitors/memory/metrics',            freememMetric,    errors.conflict,  errors.conflict  ],
+      [ 'get',    '/monitors/memory/metrics',            undefined,        errors.OK,        [freememMetric]  ],
+      [ 'post',   '/monitors/memory/metrics',            totalmemMetric,   errors.OK,        totalmemMetric   ],
+      [ 'post',   '/monitors/memory/metrics',            totalmemMetric,   errors.conflict,  errors.conflict  ],
+      [ 'get',    '/monitors/memory/metrics',            undefined,        errors.OK,        [freememMetric,totalmemMetric] ],
+      [ 'get',    '/monitors/notfound/metrics/freemem',  undefined,        errors.not_found, errors.not_found ],
+      [ 'put',    '/monitors/notfound/metrics/freemem',  badMetric,        errors.not_found, errors.not_found ],
+      [ 'delete', '/monitors/notfound/metrics/freemem',  undefined,        errors.not_found, errors.not_found ],
+      [ 'get',    '/monitors/memory/metrics/notfound',   undefined,        errors.not_found, errors.not_found ],
+      [ 'put',    '/monitors/memory/metrics/notfound',   badMetric,        errors.not_found, errors.not_found ],
+      [ 'delete', '/monitors/memory/metrics/notfound',   undefined,        errors.not_found, errors.not_found ],
+      [ 'put',    '/monitors/memory/metrics/freemem',    badMetric,        errors.conflict,  errors.conflict  ],
+      [ 'get',    '/monitors/memory/metrics/freemem',    undefined,        errors.OK,        freememMetric    ],
+      [ 'put',    '/monitors/memory/metrics/freemem',    freememNewMetric, errors.OK,        freememNewMetric ],
+      [ 'get',    '/monitors/memory/metrics/freemem',    undefined,        errors.OK,        freememNewMetric ],
+      [ 'delete', '/monitors/memory/metrics/freemem',    undefined,        errors.OK,        freememNewMetric ],
+      [ 'get',    '/monitors/memory/metrics/freemem',    undefined,        errors.not_found, errors.not_found ],
+      [ 'get',    '/monitors/memory/metrics/totalmem',   undefined,        errors.OK,        totalmemMetric   ],
+    ];
 
     datatest.testData(dataTests);
 
