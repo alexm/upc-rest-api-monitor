@@ -20,9 +20,9 @@ describe('controllers', function() {
 
     var notFoundTests = {
       '/monitors/%s/metrics': [
-        [ 'get',    'notfound', '',         undefined, errors.not_found, errors.not_found ],
-        [ 'post',   'notfound', '',         badMetric, errors.not_found, errors.not_found ],
-        [ 'delete', 'notfound', '',         undefined, errors.not_found, errors.not_found ],
+        [ 'get',    'notfound',             undefined, errors.not_found, errors.not_found ],
+        [ 'post',   'notfound',             badMetric, errors.not_found, errors.not_found ],
+        [ 'delete', 'notfound',             undefined, errors.not_found, errors.not_found ],
       ],
       '/monitors/%s/metrics/%s': [
         [ 'get',    'notfound', 'freemem',  undefined, errors.not_found, errors.not_found ],

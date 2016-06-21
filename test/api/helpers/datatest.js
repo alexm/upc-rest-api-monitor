@@ -24,7 +24,8 @@ function testData(data) {
       var expected = params.pop();
       var status = params.pop();
       var body = params.pop();
-      var uri = util.format(test, params[0], params[1]).trim();
+      params.unshift(test);
+      var uri = util.format.apply(null, params);
       var description = verb.toUpperCase() + " " + uri;
 
       describe(description, function() {
