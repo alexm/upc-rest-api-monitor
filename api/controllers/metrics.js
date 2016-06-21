@@ -17,7 +17,7 @@ var errors = require('../helpers/errors.js');
  *   ...
  * }
  */
-var metrics = {};
+var db = {};
 
 module.exports = {
   getMetricList: getMetricList,
@@ -30,9 +30,9 @@ module.exports = {
 
 function getMetricList(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
-  if (metrics.hasOwnProperty(monitorId)) {
-    var list = Object.keys(metrics[monitorId]).map(function (item) {
-      return metrics[monitorId][item];
+  if (db.hasOwnProperty(monitorId)) {
+    var list = Object.keys(db[monitorId]).map(function (item) {
+      return db[monitorId][item];
     });
     res.json(list);
   }
@@ -45,13 +45,13 @@ function enableMetric(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
   var metric = req.swagger.params.metric.value;
   if (monitors.monitors.hasOwnProperty(monitorId)) {
-    if (!metrics.hasOwnProperty(monitorId)) {
+    if (!db.hasOwnProperty(monitorId)) {
       // Build empty metric list
-      metrics[monitorId] = {};
+      db[monitorId] = {};
     }
-    if (!metrics[monitorId].hasOwnProperty(metric.name)) {
-      metrics[monitorId][metric.name] = metric;
-      res.json(metrics[monitorId][metric.name]);
+    if (!db[monitorId].hasOwnProperty(metric.name)) {
+      db[monitorId][metric.name] = metric;
+      res.json(db[monitorId][metric.name]);
     }
     else {
       // Already enabled
@@ -65,11 +65,11 @@ function enableMetric(req, res) {
 
 function disableMonitor(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
-  if (metrics.hasOwnProperty(monitorId)) {
-    var list = Object.keys(metrics[monitorId]).map(function (item) {
-      return metrics[monitorId][item];
+  if (db.hasOwnProperty(monitorId)) {
+    var list = Object.keys(db[monitorId]).map(function (item) {
+      return db[monitorId][item];
     });
-    delete metrics[monitorId];
+    delete db[monitorId];
     res.json(list);
   }
   else {
@@ -80,9 +80,9 @@ function disableMonitor(req, res) {
 function getMetric(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
   var metricId = req.swagger.params.metricId.value;
-  if (metrics.hasOwnProperty(monitorId)) {
-    if (metrics[monitorId].hasOwnProperty(metricId)) {
-      res.json(metrics[monitorId][metricId]);
+  if (db.hasOwnProperty(monitorId)) {
+    if (db[monitorId].hasOwnProperty(metricId)) {
+      res.json(db[monitorId][metricId]);
     }
     else {
       res.status(404).json(errors.not_found);
@@ -96,10 +96,10 @@ function getMetric(req, res) {
 function disableMetric(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
   var metricId = req.swagger.params.metricId.value;
-  if (metrics.hasOwnProperty(monitorId)) {
-    if (metrics[monitorId].hasOwnProperty(metricId)) {
-      var item = metrics[monitorId][metricId];
-      delete metrics[monitorId][metricId];
+  if (db.hasOwnProperty(monitorId)) {
+    if (db[monitorId].hasOwnProperty(metricId)) {
+      var item = db[monitorId][metricId];
+      delete db[monitorId][metricId];
       res.json(item);
     }
     else {
@@ -115,11 +115,11 @@ function updateMetric(req, res) {
   var monitorId = req.swagger.params.monitorId.value;
   var metricId = req.swagger.params.metricId.value;
   var metric = req.swagger.params.metric.value;
-  if (metrics.hasOwnProperty(monitorId)) {
-    if (metrics[monitorId].hasOwnProperty(metricId)) {
+  if (db.hasOwnProperty(monitorId)) {
+    if (db[monitorId].hasOwnProperty(metricId)) {
       if (metricId === metric.name) {
-        metrics[monitorId][metricId] = metric;
-        res.json(metrics[monitorId][metricId]);
+        db[monitorId][metricId] = metric;
+        res.json(db[monitorId][metricId]);
       }
       else {
         res.status(409).json(errors.conflict);
