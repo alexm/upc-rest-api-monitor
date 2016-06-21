@@ -16,13 +16,15 @@ var freememMetric = {
 
 describe('controllers', function() {
 
-  describe('metrics not found', function() {
+  describe('metrics', function() {
 
-    var notFoundTests = {
+    var dataTests = {
       '/monitors/%s/metrics': [
         [ 'get',    'notfound',             undefined, errors.not_found, errors.not_found ],
         [ 'post',   'notfound',             badMetric, errors.not_found, errors.not_found ],
         [ 'delete', 'notfound',             undefined, errors.not_found, errors.not_found ],
+        [ 'post',   'memory',               freememMetric, errors.OK, freememMetric ],
+        [ 'post',   'memory',               freememMetric, errors.conflict, errors.conflict ],
       ],
       '/monitors/%s/metrics/%s': [
         [ 'get',    'notfound', 'freemem',  undefined, errors.not_found, errors.not_found ],
@@ -31,26 +33,11 @@ describe('controllers', function() {
         [ 'get',    'memory',   'notfound', undefined, errors.not_found, errors.not_found ],
         [ 'put',    'memory',   'notfound', badMetric, errors.not_found, errors.not_found ],
         [ 'delete', 'memory',   'notfound', undefined, errors.not_found, errors.not_found ],
+        [ 'put',    'memory',   'freemem',  badMetric, errors.conflict,  errors.conflict  ],
       ],
     };
 
-    datatest.testData(notFoundTests);
-
-  });
-
-  describe('conflicting metrics', function() {
-
-    var conflictTests = {
-      '/monitors/%s/metrics': [
-        [ 'post', 'memory', '',         freememMetric, errors.OK,       freememMetric   ],
-        [ 'post', 'memory', '',         freememMetric, errors.conflict, errors.conflict ],
-      ],
-      '/monitors/%s/metrics/%s': [
-        [ 'put',  'memory', 'freemem',  badMetric,     errors.conflict, errors.conflict ],
-      ],
-    };
-
-    datatest.testData(conflictTests);
+    datatest.testData(dataTests);
 
   });
 
