@@ -57,6 +57,8 @@ describe('controllers', function() {
       [ 'delete', '/monitors/memory/metrics/freemem',    null,       OK,        freememNew         ],
       [ 'get',    '/monitors/memory/metrics/freemem',    null,       NOT_FOUND, NOT_FOUND          ],
       [ 'get',    '/monitors/memory/metrics/totalmem',   null,       OK,        totalmem           ],
+      [ 'delete', '/monitors/memory/metrics',            null,       OK,        [totalmem]         ],
+      [ 'get',    '/monitors/memory/metrics',            null,       NOT_FOUND, NOT_FOUND          ],
     ];
 
     datatest.testData(dataTests);
