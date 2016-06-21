@@ -28,8 +28,13 @@ function enableMetric(req, res) {
   var metric = req.swagger.params.metric.value;
   if (monitors.monitors.hasOwnProperty(monitorId)) {
     if (!db.exists(monitorId, metric.name)) {
-      db.put(monitorId, metric.name, metric);
-      res.json(db.get(monitorId, metric.name));
+      if (monitors.valid(metric)) {
+        db.put(monitorId, metric.name, metric);
+        res.json(db.get(monitorId, metric.name));
+      }
+      else {
+        res.status(400).json(errors.bad_request);
+      }
     }
     else {
       // Already enabled
@@ -94,8 +99,13 @@ function updateMetric(req, res) {
   if (db.exists(monitorId)) {
     if (db.exists(monitorId, metricId)) {
       if (metricId === metric.name) {
-        db.put(monitorId, metricId, metric);
-        res.json(db.get(monitorId, metricId));
+        if (monitors.valid(metric)) {
+          db.put(monitorId, metricId, metric);
+          res.json(db.get(monitorId, metricId));
+        }
+        else {
+          res.status(400).json(errors.bad_request);
+        }
       }
       else {
         res.status(409).json(errors.conflict);

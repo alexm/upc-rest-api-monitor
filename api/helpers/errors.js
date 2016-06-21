@@ -12,6 +12,10 @@ var errors = {
     code: 409,
     message: "Conflict",
   },
+  bad_request: {
+    code: 400,
+    message: "Bad Request",
+  },
 };
 
 module.exports = errors;

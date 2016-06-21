@@ -123,6 +123,10 @@ paths:
           description: Metric already enabled.
           schema:
             $ref: "#/definitions/Error"
+        400:
+          description: Invalid metric.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -204,6 +208,10 @@ paths:
             $ref: "#/definitions/Error"
         409:
           description: Metric ID mismatch.
+          schema:
+            $ref: "#/definitions/Error"
+        400:
+          description: Invalid metric.
           schema:
             $ref: "#/definitions/Error"
         default:
