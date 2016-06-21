@@ -29,7 +29,7 @@ function testData(tests) {
 
         var op = request(server);
         op = op[verb](uri);
-        if (undefined !== body) {
+        if (null !== body) {
           op = op.send(body);
         }
 
