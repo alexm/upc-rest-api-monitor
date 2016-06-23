@@ -1,5 +1,4 @@
 'use strict';
-var util = require('util');
 var monitors = require('../helpers/monitors.js');
 var errors = require('../helpers/errors.js');
 var db = require('../helpers/db.js');
