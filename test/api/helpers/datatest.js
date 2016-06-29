@@ -9,7 +9,7 @@ module.exports = {
 
 /*
  * tests = [
- *   [ verb, uri, body, status, result ],
+ *   [ verb, uri, body, status, result, headers ],
  *   ...
  * ]
  */
@@ -20,6 +20,7 @@ function testData(tests) {
     var body = test[2];
     var status = test[3];
     var expected = test[4];
+    var headers = test[5];
 
     var description = verb.toUpperCase() + " " + uri;
 
@@ -33,8 +34,17 @@ function testData(tests) {
           op = op.send(body);
         }
 
+        // Set default accept for client
+        op.set('Accept', 'application/json');
+
+        // Set additional headers for client
+        if (undefined !== headers) {
+          Object.keys(headers).map(function (item) {
+            op.set(item, headers[item]);
+          });
+        }
+
         op
-          .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
           .expect(status.code)
           .end(function(err, res) {

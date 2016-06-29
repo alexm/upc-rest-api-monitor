@@ -16,6 +16,10 @@ var errors = {
     code: 400,
     message: "Bad Request",
   },
+  not_acceptable: {
+    code: 406,
+    message: "Not Acceptable",
+  },
 };
 
 module.exports = errors;

@@ -121,6 +121,48 @@ describe('controllers', function() {
 
     });
 
+    describe('GET /monitors (XML)', function() {
+
+      it('should return not acceptable', function(done) {
+
+        request(server)
+          .get('/monitors')
+          .set('Accept', 'text/xml')
+          .set('If-None-Match', monitors_etag)
+          .expect(406)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.eql(errors.not_acceptable);
+
+            done();
+          });
+
+      });
+
+    });
+
+    describe('GET /monitors/memory (XML)', function() {
+
+      it('should return not acceptable', function(done) {
+
+        request(server)
+          .get('/monitors/memory')
+          .set('Accept', 'text/xml')
+          .set('If-None-Match', memory_etag)
+          .expect(406)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.eql(errors.not_acceptable);
+
+            done();
+          });
+
+      });
+
+    });
+
   });
 
 });

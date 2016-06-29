@@ -6,6 +6,7 @@ var OK        = errors.OK;
 var CONFLICT  = errors.conflict;
 var NOT_FOUND = errors.not_found;
 var BAD_REQ   = errors.bad_request;
+var NOT_ACC   = errors.not_acceptable;
 
 describe('controllers', function() {
 
@@ -81,6 +82,14 @@ describe('controllers', function() {
 
     datatest.testData(dataTests);
 
+    // Now make the tests above not acceptable
+    dataTests.forEach(function (test) {
+      test[3] = NOT_ACC;
+      test[4] = NOT_ACC;
+      test[5] = {'Accept': 'text/xml'};
+    });
+
+    datatest.testData(dataTests);
   });
 
 });

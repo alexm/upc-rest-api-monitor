@@ -37,6 +37,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Monitor"
+        '406':
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
@@ -60,6 +64,10 @@ paths:
           description: Details of the given monitor.
           schema:
             $ref: "#/definitions/Monitor"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor not found.
           schema:
@@ -89,6 +97,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor not found.
           schema:
@@ -115,6 +127,10 @@ paths:
           description: Metrics successfully setup.
           schema:
             $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor not found.
           schema:
@@ -144,6 +160,10 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor not found.
           schema:
@@ -176,6 +196,10 @@ paths:
           description: Metric attributes.
           schema:
             $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor and or metric not found.
           schema:
@@ -202,6 +226,10 @@ paths:
           description: Metrics successfully updated.
           schema:
             $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor and or metric not found.
           schema:
@@ -229,6 +257,10 @@ paths:
           description: Metric successfully deleted.
           schema:
             $ref: "#/definitions/Metric"
+        406:
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         404:
           description: Monitor and or metric not found.
           schema:
@@ -273,6 +305,10 @@ paths:
           description: History information for the given user
           schema:
             $ref: "#/definitions/DataSet"
+        '406':
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
         default:
           description: Unexpected error
           schema:
