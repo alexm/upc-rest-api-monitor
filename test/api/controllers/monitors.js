@@ -4,9 +4,13 @@ var server = require('../../../app');
 var monitors = require('../../../api/helpers/monitors.js');
 var errors = require('../../../api/helpers/errors.js');
 
+var etag_like = /^W\//;
+
 describe('controllers', function() {
 
   describe('monitors', function() {
+
+    var monitors_etag = "";
 
     describe('GET /monitors', function() {
 
@@ -16,17 +20,21 @@ describe('controllers', function() {
           .get('/monitors')
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
+          .expect('ETag', etag_like)
           .expect(200)
           .end(function(err, res) {
             should.not.exist(err);
 
             res.body.should.eql(monitors.list);
+            monitors_etag = res.get('ETag');
 
             done();
           });
       });
 
     });
+
+    var memory_etag = "";
 
     describe('GET /monitors/memory', function() {
 
@@ -36,11 +44,13 @@ describe('controllers', function() {
           .get('/monitors/memory')
           .set('Accept', 'application/json')
           .expect('Content-Type', /json/)
+          .expect('ETag', etag_like)
           .expect(200)
           .end(function(err, res) {
             should.not.exist(err);
 
             res.body.should.eql(monitors.monitors['memory']);
+            memory_etag = res.get('ETag');
 
             done();
           });
@@ -61,6 +71,48 @@ describe('controllers', function() {
             should.not.exist(err);
 
             res.body.should.eql(errors.not_found);
+
+            done();
+          });
+
+      });
+
+    });
+
+    describe('GET /monitors (cached)', function() {
+
+      it('should return not modified', function(done) {
+
+        request(server)
+          .get('/monitors')
+          .set('Accept', 'application/json')
+          .set('If-None-Match', monitors_etag)
+          .expect(304)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.be.empty();
+
+            done();
+          });
+
+      });
+
+    });
+
+    describe('GET /monitors/memory (cached)', function() {
+
+      it('should return not modified', function(done) {
+
+        request(server)
+          .get('/monitors/memory')
+          .set('Accept', 'application/json')
+          .set('If-None-Match', memory_etag)
+          .expect(304)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.be.empty();
 
             done();
           });
