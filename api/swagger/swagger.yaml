@@ -45,6 +45,32 @@ paths:
           description: Unexpected error
           schema:
             $ref: "#/definitions/Error"
+  /monitors.html:
+    x-swagger-router-controller: monitors
+    get:
+      operationId: getMonitorListAsHtml
+      summary: Monitor Types as HTML
+      description: |
+        The Monitors endpoint returns information about the monitors available
+        for a given server. The response includes the display name and other
+        details about each monitor.
+      produces:
+        - text/html
+      tags:
+        - Monitor
+      responses:
+        '200':
+          description: An array of monitors
+          schema:
+            type: string
+        '406':
+          description: Negotiation not acceptable.
+          schema:
+            $ref: "#/definitions/Error"
+        default:
+          description: Unexpected error
+          schema:
+            $ref: "#/definitions/Error"
   "/monitors/{monitorId}":
     x-swagger-router-controller: monitors
     parameters:

@@ -163,6 +163,71 @@ describe('controllers', function() {
 
     });
 
+    var monitors_html_etag = "";
+
+    describe('GET /monitors.html', function() {
+
+      it('should return a list of monitors in HTML', function(done) {
+
+        request(server)
+          .get('/monitors.html')
+          .set('Accept', 'text/html')
+          .expect('Content-Type', /html/)
+          .expect(200)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.match(/html/);
+            monitors_html_etag = res.get('ETag');
+
+            done();
+          });
+
+      });
+
+    });
+
+    describe('GET /monitors.html (JSON)', function() {
+
+      it('should return not acceptable', function(done) {
+
+        request(server)
+          .get('/monitors.html')
+          .set('Accept', 'application/json')
+          .expect(406)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.eql(errors.not_acceptable);
+
+            done();
+          });
+
+      });
+
+    });
+
+    describe('GET /monitors.html (cached)', function() {
+
+      it('should return not modified', function(done) {
+
+        request(server)
+          .get('/monitors.html')
+          .set('Accept', 'text/html')
+          .set('If-None-Match', monitors_html_etag)
+          .expect(304)
+          .end(function(err, res) {
+            should.not.exist(err);
+
+            res.body.should.be.empty();
+
+            done();
+          });
+
+      });
+
+    });
+
   });
 
 });
