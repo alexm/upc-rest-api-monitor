@@ -27,7 +27,7 @@ echo "prefix = $HOME/npm" >> ~/.npmrc
 
 Finally, you need to install the following modules globally:
 
-*   Swagger Node integration: `npm install -g swagger
+*   Swagger Node integration: `npm install -g swagger`
 *   Mocha for test coverage: `npm install -g mocha`
 *   Test coverage: `npm install -g istanbul`
 
