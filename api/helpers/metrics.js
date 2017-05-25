@@ -11,7 +11,7 @@
  *   ...
  * }
  */
-var db = {
+var metrics = {
   data: {},
 
   exists: function (monitor, metric) {
@@ -52,4 +52,4 @@ var db = {
   },
 };
 
-module.exports = db;
+module.exports = metrics;
