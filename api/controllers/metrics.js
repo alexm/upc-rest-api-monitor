@@ -2,6 +2,7 @@
 var monitors = require('../helpers/monitors.js');
 var errors = require('../helpers/errors.js');
 var metrics = require('../helpers/metrics.js');
+var datasets = require('../helpers/datasets.js');
 
 module.exports = {
   getMetricList: getMetricList,
@@ -38,6 +39,7 @@ function enableMetric(req, res) {
         if (!metrics.exists(monitorId, metric.name)) {
           if (monitors.valid(metric)) {
             metrics.put(monitorId, metric.name, metric);
+            datasets.start(monitorId, metric.name, metric.interval, metric.retention);
             res.json(metrics.get(monitorId, metric.name));
           }
           else {
@@ -110,6 +112,7 @@ function disableMetric(req, res) {
         if (metrics.exists(monitorId, metricId)) {
           var item = metrics.get(monitorId, metricId);
           metrics.delete(monitorId, metricId);
+          datasets.stop(monitorId, metricId);
           res.json(item);
         }
         else {
